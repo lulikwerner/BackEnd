@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         timer: 3000
                     });
                     setTimeout(() => {
-                       window.location.href = `http://localhost:8080/premium/${userId}/documents`;
+                       window.location.href = ` https://backend-commerce-dev.onrender.com/premium/${userId}/documents`;
                       }, 3000);
                 }
             } else if(roleText!==role){
