@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'No puedes modificar el rol',
+                        title: 'No puedes modificar el rol aun',
                         text: `Faltan cargar documentos a tu perfil: ${missingFiles}`,
                         showConfirmButton: false,
                         timer: 3000
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     Swal.fire({
                         position: 'top-end',
                         icon: 'error',
-                        title: 'Error del servidorr',
-                        text: `Error: ${responseData.message}`,
+                        title: 'No se puedo modificar el rol',
+                        text: `Faltan cargar documentos a tu perfil: ${missingFiles}`,
                         showConfirmButton: false,
                         timer: 3000
                     });
