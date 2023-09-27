@@ -4,7 +4,7 @@ import { generateToken } from "../services/auth.js";
 import { userService } from "../services/repositories.js";
 import LoggerService from "../services/LoggerService.js";
 import config from "../config.js";
-import UserDTO from "../dto/user/userDTO.js";
+import UserDTO from '../dto/user/UserDTO.js';
 import { UsageRecordInstance } from "twilio/lib/rest/wireless/v1/usageRecord.js";
 import { usersServices } from "../dao/mongo/managers/index.js";
 import RestoreTokenDTO from "../dto/user/RestoreTokenDTO.js";
