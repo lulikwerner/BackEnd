@@ -2,7 +2,7 @@ import chai from "chai";
 import supertest from "supertest";
 
 const expect = chai.expect;
-const requester = supertest("http://localhost:8080");
+const requester = supertest("https://backend-commerce-dev.onrender.com/");
 
 describe("Testing Integrador ", () => {
   describe("Test de Users", () => {
