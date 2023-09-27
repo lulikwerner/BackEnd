@@ -8,11 +8,20 @@
     <li>
       <h4>Id: {{this.product._id}}</h4>
       <h2>Title: {{this.product.title}}</h2>
+            {{#if this.product.thumbnail}}
+     <img src="/img/products/{{this.product.thumbnail.[0].filename}}" alt="{{ this.product.thumbnail.[0].originalname }}" width="300">
+                <img src="data:image/png;base64, {{this.product.thumbnail}}" alt="Thumbnail">
+            {{else}}
+                No Image
+            {{/if}}
       <p>Description: {{this.product.description}}</p>
       <h4>Code: {{this.product.code}}</h4>
       <p>Price: {{this.product.price}}</p>
       <p>Status: {{this.product.status}}</p>
-      <img src="/img/products/{{this.product.thumbnail}}" alt="{{ this.thumbnail.[0].originalname }}" width="300">
+  
+      
+ 
+
       <p >Cantidad: <p class="quantity">{{this.quantity}}</p></p>
     </li>
     <button id="addButton" type="add" class="btn addButtonStyle m-3" data-pid="{{this.product._id}}" data-cid="{{carth._id}}">+</button>
