@@ -59,8 +59,11 @@ const initlizePassportStrategies = () => {
           age,
           role,
           email,
-          password: hashedPassword
-        }
+          password: hashedPassword,
+          documents: {},
+          thumbnail:{}
+        };
+        
         const result = await usersServices.createUsers(newUser);
         logger.logger.info('el resultado es', result);
        

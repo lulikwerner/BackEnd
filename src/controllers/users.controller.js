@@ -320,13 +320,11 @@ const uploadDocuments = async (req, res) => {
   const { uid } = req.params;
   console.log(req.body)
   const updateFields = {};
-  console.log('entro');
-  console.log({ uid });
 //Traigo al user
 const user = await userService.getUserByService({_id:uid})
-
-const userDocuments = user.documents.filter((document) => document !== null);
-console.log('los docs', userDocuments);
+console.log('elusrer..',user)
+//const userDocuments = user.documents.filter((document) => document !== null);
+//console.log('los docs', userDocuments);
   function findFileByFieldname(files, fieldName) {
     for (const file of files) {
       if (file.fieldname === fieldName) {
@@ -338,10 +336,13 @@ console.log('los docs', userDocuments);
 
   try {
     const profileFiles = findFileByFieldname(req.files, 'profile');
+    console.log('elproffile',profileFiles)
     const iDriverFiles = findFileByFieldname(req.files, 'iDriver');
+    console.log('elidrive',iDriverFiles)
     const addressProofFiles = findFileByFieldname(req.files, 'addressProof');
+    console.log('eladdre',addressProofFiles)
     const bankProofFiles = findFileByFieldname(req.files, 'bankProof');
-
+    console.log('elbank',bankProofFiles)
     if (profileFiles) {
       await userService.updateUsersService(uid, { thumbnail: profileFiles });
     }

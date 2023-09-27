@@ -27,14 +27,12 @@ const schema = new mongoose.Schema({
     path: String,
     size: Number,
   },
-  documents: {
-    type: 
-      {
-        name: String,
-        reference: String,
-      },
-    
-  },
+  documents: [
+    {
+      name: String,
+      reference: String,
+    },
+  ],
   last_connection: {
     type: Date,
     default: Date.now,
