@@ -12,7 +12,7 @@
       <h4>Code: {{this.product.code}}</h4>
       <p>Price: {{this.product.price}}</p>
       <p>Status: {{this.product.status}}</p>
-      <p>Image: {{this.product.thumbnail}}</p>
+      <img src="/img/products/{{this.product.thumbnail}}" alt="{{ this.thumbnail.[0].originalname }}" width="300">
       <p >Cantidad: <p class="quantity">{{this.quantity}}</p></p>
     </li>
     <button id="addButton" type="add" class="btn addButtonStyle m-3" data-pid="{{this.product._id}}" data-cid="{{carth._id}}">+</button>
