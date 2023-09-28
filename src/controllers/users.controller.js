@@ -280,6 +280,7 @@ const deleteInactiveUsers = async (req, res) => {
 };
 
 
+
 const deleteuS = async (req, res) => {
   try {
     const { uid } = req.params;
