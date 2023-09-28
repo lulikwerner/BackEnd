@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userId = uploadFiles.getAttribute('data-id');
         const formData = new FormData(uploadForm); 
-console.log(formData)
+console.log('aca')
         try {
             const response = await fetch(`/api/users/premium/${userId}/documents`, {
                 method: 'POST',
@@ -23,9 +23,9 @@ console.log(formData)
                     title: 'Files Updated',
                     text: 'Los archivos se cargaron exitosamente',
                   });
-                  setTimeout(() => {
+                 /*setTimeout(() => {
                     window.location.href = `https://backend-commerce-dev.onrender.com/profile`;
-                  }, 2000);
+                  }, 2000);*/
             }
             else{
                 Swal.fire({
