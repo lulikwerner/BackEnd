@@ -23,9 +23,9 @@ console.log('aca')
                     title: 'Files Updated',
                     text: 'Los archivos se cargaron exitosamente',
                   });
-                 /*setTimeout(() => {
+                 setTimeout(() => {
                     window.location.href = `https://backend-commerce-dev.onrender.com/profile`;
-                  }, 2000);*/
+                  }, 2000);
             }
             else{
                 Swal.fire({
