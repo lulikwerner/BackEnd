@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
         break;
     }
 
-    callback(null, `${__dirname}/public/${folder}`);
+    callback(null, `${__dirname}/Public/${folder}`);
   },
   filename: function (req, file, callback) {
     callback(null, `${Date.now()}-${file.originalname}`);
