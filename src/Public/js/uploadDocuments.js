@@ -9,12 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userId = uploadFiles.getAttribute('data-id');
         const formData = new FormData(uploadForm); 
-
+console.log(formData)
         try {
             const response = await fetch(`/api/users/premium/${userId}/documents`, {
                 method: 'POST',
                 body: formData,
             }); 
+            console.log('antes de respuesta')
             console.log(response)
             if(response.ok){
                 Swal.fire({

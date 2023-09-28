@@ -129,7 +129,7 @@ const initlizePassportStrategies = () => {
   passport.use('github', new GithubStrategy({
     clientID: 'Iv1.1dd1410ac14946b5', //config.gitHub.ClientId,
     clientSecret: '795760751219fa0e7038b9f9bbaa1e1f5d768235', //config.gitHub.Secret,
-    callbackURL: 'http://localhost:8080/api/sessions/githubcallback' //config.gitHub.callbackURL
+    callbackURL: 'https://backend-commerce-dev.onrender.com/api/sessions/githubcallback' //config.gitHub.callbackURL
   }, async (accessToken, refreshToken, profile, done) => {
     try {
  
