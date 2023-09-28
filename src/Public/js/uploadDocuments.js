@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadFiles = document.getElementById('uploadFiles');
 
     uploadForm.addEventListener('submit', async (event) => {
+        console.log('click submit')
         event.preventDefault();
 
         const userId = uploadFiles.getAttribute('data-id');
