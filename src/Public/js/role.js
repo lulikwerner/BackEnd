@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         position: 'top-end',
                         icon: 'error',
                         title: 'No se puedo modificar el rol',
-                        text: `Faltan cargar documentos a tu perfil: ${missingFiles}`,
+                        text: `Faltan cargar documentos a tu perfil`,
                         showConfirmButton: false,
                         timer: 3000
                     });
