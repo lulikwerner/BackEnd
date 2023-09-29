@@ -21,6 +21,10 @@ const transport = nodemailer.createTransport({
 
 const twilioClient = twilio(config.twilio.sid, config.twilio.Token)
 
+const welcome = async (req,res) => {
+  res.render('welcome');
+}
+
 const  realTimeProducts = async (req, res) => {
     const products = await productService.getProductsService();
     res.render('realTimeProducts', { producth: products, user: req.user });
@@ -201,6 +205,7 @@ const upload = async (req, res) => {
 
 
 export default {
+    welcome,
     realTimeProducts,
     getProducts,
     chat,
