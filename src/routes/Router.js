@@ -54,6 +54,7 @@ export default class BaseRouter {
       const user = req.user;
       // Si el usuario quiere acceder a la ruta de logout, permitirlo sin realizar las verificaciones de políticas
       if (req.path === '/logout') return next();
+      if (policies[0] === 'PRIVATE' || policies[0] === 'NO_AUTH') return next();
       //Si tiene el policy PRIVATE
       if (policies[0] === 'PRIVATE' && user) return next();
       //Si tiene el policy PRIVATE y no tiene user    

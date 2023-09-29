@@ -13,7 +13,8 @@ export default class ViewsRouter extends BaseRouter {
 
   init() {
 
-//this.get('/',['USER', 'PUBLIC'],passportCall('jwt', {strategyType: 'jwt'}),viewsController.welcome)
+    this.get('/', ['PRIVATE', 'NO_AUTH'], viewsController.welcome);
+
 //Para mandar email
 this.get('/mail',['USER','PUBLIC'],passportCall('jwt', { strategyType: 'jwt' }), viewsController.mail);
 
