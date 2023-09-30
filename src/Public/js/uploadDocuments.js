@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     text: 'Los archivos se cargaron exitosamente',
                   });
                   setTimeout(() => {
-                    window.location.href = `http://localhost:8080/profile`;
+                    window.location.href = `https://backend-commerce-dev.onrender.com/profile`;
                   }, 2000);
             }
             else{
