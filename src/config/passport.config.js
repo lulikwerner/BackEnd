@@ -108,9 +108,9 @@ const initlizePassportStrategies = () => {
 
   passport.use('github', new GithubStrategy({
 
-    clientID: 'Iv1.1dd1410ac14946b5',//config.gitHub.ClientId,
-    clientSecret:'795760751219fa0e7038b9f9bbaa1e1f5d768235',// config.gitHub.Secret,
-    callbackURL:'https://backend-commerce-dev.onrender.com/api/sessions/githubcallback'// config.gitHub.callbackURL
+    clientID: config.gitHub.ClientId,// 'Iv1.1dd1410ac14946b5',
+    clientSecret: config.gitHub.Secret, //'795760751219fa0e7038b9f9bbaa1e1f5d768235',
+    callbackURL: config.gitHub.callbackURL//'https://backend-commerce-dev.onrender.com/api/sessions/githubcallback'// c
   }, async (accessToken, refreshToken, profile, done) => {
     try {
       logger.logger.debug('entrostrategygithub');
