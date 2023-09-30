@@ -20,23 +20,18 @@ export default class CartsRouter extends BaseRouter {
     this.put('/:cid', ['USER', 'PREMIUM'], passportCall('jwt', { strategyType: 'jwt' }), verifyCart, cartsController.updateCart);
 
     //Actualiza SÓLO la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body. Si paso 3 por body voy a tener entonces 3 en qty
-    //http://localhost:8080/api/carts/:cid/product/:pid
     this.put('/:cid/product/:pid', ['USER', 'PREMIUM'], passportCall('jwt', { strategyType: 'jwt' }), verifyCart, cartsController.updateQtyProductInCart);
 
     //Elimina del carrito seleccionado el producto seleccionado
-    //http://localhost:8080/api/carts/:cid/products/:pid
     this.delete('/:cid/product/:pid', ['USER', 'PREMIUM'], passportCall('jwt', { strategyType: 'jwt' }), verifyCart, cartsController.deleteProductInCart);
 
     //Elimina los productos del carrito. Lo vacia
-    //http://localhost:8080/api/carts/:cid
     this.delete('/:cid', ['USER', 'PREMIUM'], passportCall('jwt', { strategyType: 'jwt' }), verifyCart, cartsController.deleteCart);
 
     //Finaliza el proceso de compra
-    //http://localhost:8080/api/carts/:cid/purchase
     this.post('/:cid/purchase', ['USER', 'PREMIUM'], passportCall('jwt', { strategyType: 'jwt' }), verifyCart, cartsController.checkoutCart);
 
     //Muestra el ticket de compra 
-    //http://localhost:8080/api/carts/:cid/purchase
     this.get('/:cid/purchase', ['USER', 'PREMIUM'], passportCall('jwt', { strategyType: 'jwt' }), verifyCart, cartsController.checkoutDisplay);
   
   }

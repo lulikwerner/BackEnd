@@ -5,7 +5,6 @@ import MongoStore from 'connect-mongo'
 import cookieParser from 'cookie-parser';
 import { Server } from 'socket.io';
 import passport from 'passport';
-//import nodemailer from 'nodemailer'
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUiExpress from 'swagger-ui-express';
 
@@ -25,23 +24,7 @@ import initlizePassportStrategies from './config/passport.config.js'
 import errorHandler from './middlewares/error.js'
 import attachLogger from './middlewares/logger.js';
 import LoggerService from '../src/services/LoggerService.js'
-//import verifyCart from './middlewares/verifyCart.js';
 
-/*import cluster from 'cluster'
-import os from 'os'
-
-const cpus = os.cpus.length
-if(cluster.isPrimary){
-  console.log('Primary process is running');
-  console.log('soy el procesador principal, procedo a iniciar a mis workers')
-  for(let i=0;i<cpus;i++){
-  cluster.fork();
-  }
-  /*cluster.on('exit', worker =>{
-    console.log('Proceso hijo muerto, generando reemplazo')
-    cluster.fork()
-  })
-}else{*/
 
 
 const app = express();
@@ -64,23 +47,6 @@ const startServer = async (persistenceType) => {
   const specs = swaggerJSDoc(swaggerOptions);
   app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))//Le digo que se inizialize en /docs que lo procese en el panel swagger y que lo haga a partir de las configuraciones de las  specs
 
-  /*const transport = nodemailer.createTransport({
-   service:'gmail',
-   port:587,
-   auth:{
-     user:config.app.email,
-     pass:config.app.password
-   }
- })*///para
-  //Conecta a mi mongoose db
-  /*try {
-      await mongoose.connect(
-        config.mongoSecret.MongoURL
-      );
-     logger.logger.info('Connected to MongoDB');
-    } catch (error) {
-      logger.logger.error('Failed to connect to MongoDB:', error);
-    }*/
 
   //Conecto a mi puerto
   const server = app.listen(PORT, () => {

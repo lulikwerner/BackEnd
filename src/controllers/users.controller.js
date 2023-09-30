@@ -212,7 +212,7 @@ const deleteUsers = async (req, res) => {
       if (user.last_connection && user.role != 'ADMIN' && user.email != null) {
         // Calculo la diferencia entre cuando se conecto por ultima vez y el dia de hoy
         const connectionDate = dateToday - new Date(user.last_connection); // Convierto el date a un objeto
-        if (connectionDate > 1800000) {
+        if (connectionDate > 172800000) {
           deleteUsers.push(user);
           logger.logger.info('Empujar al arreglo delete', deleteUsers);
         }
