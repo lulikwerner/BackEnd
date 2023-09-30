@@ -411,7 +411,10 @@ const checkoutCart = async (req, res) => {
 const checkoutDisplay = async (req, res) => {
   const { cid } = req.params;
   logger.logger.info('');
-
+  //Busco el usuario
+  const userExist = await userService.getUserByService({ cart: cid })
+  const userEmail = userExist.email
+  console.log(userEmail)
   try {
     const ticketData = await checkoutTicketModel
       .findOne({ cid: cid })
