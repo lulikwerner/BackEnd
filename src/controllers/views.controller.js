@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken'
+import nodemailer from 'nodemailer'
+import twilio from "twilio";
+
+import config from '../config.js';
 import { productService, cartService, userService } from '../services/repositories.js';
 import productModel from '../dao/mongo/models/products.js';
 import TokenDTO from '../dto/user/TokenDTO.js';
 import AdminDTO from '../dto/user/AdminDTO.js';
 import LoggerService from '../services/LoggerService.js';
-import config from '../config.js';
-import nodemailer from 'nodemailer'
-import twilio from "twilio";
+
 
 const logger = new LoggerService(config.logger.type); 
 
@@ -100,7 +102,6 @@ const login = async(req,res)=>{
 const profile = async (req, res) => {
   try {
     const user = new TokenDTO(req.user) || new AdminDTO(req.user);
-    console.log(user)
     res.render('profile', { user: user });
   } catch (error) {
     return res.status(500).json({
@@ -118,19 +119,6 @@ const mail =  async (req,res) => {
     //Le doy el formato a mi email lo puedo guardar en un componentes
     html:`
     <div><h1>Esto es un correo de prueba</h1></div>`
-    //dentro de las bastics <img src='cid:perfilbonito'/>
-    /*,
-    attachments:[
-      {
-        filename:'Curriculum.pdf',
-        path://ruta donde lo tengo guardado al file
-      },
-      {
-        filename:'perritoDeprimido.jpg',
-        path://ruta donde lo tengo guardado la foto,
-        cid:'perfilbonito'
-      }
-    ]*/
   })
   res.send({status:'succes', payload:result})
 }
@@ -147,6 +135,7 @@ const sms = async (req,res) => {
 
 const profileRole = async (req,res) => {
   const { uid } = req.params;
+
   try {
     const user= await userService.getUserByService({_id: uid})
     logger.logger.debug(user);
@@ -167,6 +156,7 @@ const restoreRequest = (req,res) => {
 
 const restorePassword = (req,res) => {
   const {token} = req.query;
+
   try{
     const validToken = jwt.verify(token, config.tokenKey.key);
     res.render('restorePassword')
@@ -182,11 +172,11 @@ const showUser = async (req,res) => {
 
 const searchUser = async (req, res) => {
   const { uid } = req.params;
+
   try {
     const findUser = await userService.getUserByService({ _id: uid });
     logger.logger.debug(findUser)
     if (findUser) {
-      // Include user data and success status in the response and render the template
       res.status(200).render('modify', { user: findUser, success: true });
     } else {
       res.status(404).json({ success: false, message: "User not found" });
@@ -201,7 +191,6 @@ const upload = async (req, res) => {
   const { uid } = req.params;
   res.render('uploadDocuments', { uid }); 
 };
-
 
 
 export default {

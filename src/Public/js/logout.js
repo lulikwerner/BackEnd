@@ -13,7 +13,7 @@ logOutButton.addEventListener('click', async () => {
     if (response.isConfirmed) {
       fetch('/api/sessions/logout', {
         method: 'POST',
-   
+
       })
         .then(response => {
           if (response.ok) {

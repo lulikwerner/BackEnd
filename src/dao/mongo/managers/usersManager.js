@@ -25,8 +25,6 @@ export default class UsersManager {
   };
 
   updateUsers = async (id, updateFields) => {
-    console.log('entro')
-    console.log(updateFields)
     return await userModel.findByIdAndUpdate(
       id,
       { $set: updateFields },

@@ -1,28 +1,30 @@
 <div>
   {{#if checkoutTicket.ticket}}
-    <h1>Orden de compra </h1>
-    <h3>Gracias por su compra {{checkoutTicket.ticket.purchaser}}</h3>
-    <h3>El numero de orden de compra {{checkoutTicket.ticket.code}}</h3>
-    <h3>El total de la orden: ${{checkoutTicket.ticket.amount}}</h3>
-    {{else}}
-     <h3>No hay stock suficiente para realizar la compra</h3>
+  <h1>Orden de compra </h1>
+  <h3>Gracias por su compra {{checkoutTicket.ticket.purchaser}}</h3>
+  <h3>El numero de orden de compra {{checkoutTicket.ticket.code}}</h3>
+  <h3>El total de la orden: ${{checkoutTicket.ticket.amount}}</h3>
+  {{else}}
+  <h3>No hay stock suficiente para realizar la compra</h3>
   {{/if}}
 
   {{#if checkoutTicket.Outstock}}
-    <h2>Los productos que no se pudieron comprar porque no hay suficiente stock son</h2>
-    <h3>Sin Stock:</h3>
-    <ul>
-      {{#each checkoutTicket.Outstock}}
-        <li>
-          <p>Nombre: {{this.name}}</p>
-          <p>Precio: {{this.price}}</p>
-          <p>Cantidad: {{this.quantity}}</p>
-        </li>
-      {{/each}}
-    </ul>
+  <h2>Los productos que no se pudieron comprar porque no hay suficiente stock son</h2>
+  <h3>Sin Stock:</h3>
+  <ul>
+    {{#each checkoutTicket.Outstock}}
+    <li>
+      <p>Nombre: {{this.name}}</p>
+      <p>Precio: {{this.price}}</p>
+      <p>Cantidad: {{this.quantity}}</p>
+    </li>
+    {{/each}}
+  </ul>
   {{/if}}
-<button>
- <a href="/products" class="btn btn-secondary m-3 keep-shopping-btn">Volver al inicio</a>
- </button>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/checkout.js" type="module"></script>
+
+  <button>
+    <a href="/products" class="btn btn-secondary m-3 keep-shopping-btn">Volver al inicio</a>
+  </button>
+
+  <script src="/socket.io/socket.io.js"> </script>
+  <script src="/js/checkout.js" type="module"> </script>

@@ -1,23 +1,21 @@
 import passport from "passport";
 import local from "passport-local";
-import { Strategy, ExtractJwt } from 'passport-jwt';
-import { usersServices, cartsM } from '../dao/mongo/managers/index.js';
+import { Strategy } from 'passport-jwt';
+import GithubStrategy from "passport-github2";
+
+import config from '../config.js';
+import { cookieExtractor } from "../utils.js";
+import { createHash, isValidPassword } from "../services/auth.js";
 import ErrorService from '../services/Error/ErrorService.js';
 import { userErrorIncompleteValue } from '../constants/userErrors.js'
 import EErrors from '../constants/EErrors.js'
-
-
-import GithubStrategy from "passport-github2";
-import { createHash, isValidPassword } from "../services/auth.js";
-import { cookieExtractor } from "../utils.js";
-import config from '../config.js';
+import { usersServices, cartsM } from '../dao/mongo/managers/index.js';
+import LoggerService from '../services/LoggerService.js';
 import TokenDTO from '../dto/user/TokenDTO.js'
 import AdminDTO from '../dto/user/AdminDTO.js'
-import LoggerService from '../services/LoggerService.js';
 
 
-
-const logger = new LoggerService(config.logger.type); 
+const logger = new LoggerService(config.logger.type);
 
 
 const LocalStrategy = local.Strategy; //Es la estrategia
@@ -42,7 +40,6 @@ const initlizePassportStrategies = () => {
           code: EErrors.INCOMPLETE_VALUES,
           status: 400
         })
-
       }
       if (isNaN(age) || age < 0) { done(null, false, { message: 'Ingrese una edad valida' }) }
       //Busco si ya existe el usuario
@@ -51,7 +48,6 @@ const initlizePassportStrategies = () => {
       //Si no existe el usuario en la db. Encripto la contrasenia
       else {
         const hashedPassword = await createHash(password);
-
         //Construyo el usuario que voy a registrar
         const newUser = {
           first_name,
@@ -61,17 +57,12 @@ const initlizePassportStrategies = () => {
           email,
           password: hashedPassword,
           documents: {},
-          thumbnail:{}
-
+          thumbnail: {}
         };
-        
+
         const result = await usersServices.createUsers(newUser);
         logger.logger.info('el resultado es', result);
-       
-        const products = []; // Using const to declare an empty array
-        // Initialize with an empty array or any initial products
-      
-
+        const products = []; //Inicializo un array vacio de products
         const newCart = await cartsM.createCart(products);
         const cartId = newCart._id.toString();
         const userId = result._id.toString();
@@ -89,7 +80,6 @@ const initlizePassportStrategies = () => {
   passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     //PASSPORT SOLO DEBE DEVOLVER EL USUARIO FINAL. NO ES RESPONSABLE DE LA SESION
     logger.logger.debug('entro al initialized');
-    
     let user;
     try {
       if (email === config.adminPas.adminEmail && password === config.adminPas.adminPassword) {
@@ -97,11 +87,10 @@ const initlizePassportStrategies = () => {
         user = new AdminDTO(user)
         logger.logger.info('user admin', user);
         return done(null, user);
-
       }
-      console.log(email)
+
       user = await usersServices.getUserBy({ email }); //Solo busco por email
-      console.log(email)
+
       if (!user) return done(null, false, { message: "Credenciales incorrectas" });
       // Si el usuario existe valido el pw
       const isPasswordValid = await isValidPassword(password, user.password);
@@ -110,30 +99,19 @@ const initlizePassportStrategies = () => {
       if (!isPasswordValid) return done(null, false, { message: "contrasenia incorrecta" });
       //Si el usuario existe y la contrasenia es correcta entonces devuelvo la sesion en passport
       user = new TokenDTO(user)
-      //Cuando no usaba el dto
-      /*user = {
-          id:user._id,  
-          first_name: user.first_name,
-          last_name: user.last_name,
-          age:user.age,
-          cart: user.cart, //aca me tiene que traer el id del cart
-          email: user.email,
-          role: user.role
-      };*/
-      return done(null, user);
 
+      return done(null, user);
     } catch (error) {
       return done(error);
     }
   }));
 
   passport.use('github', new GithubStrategy({
-    clientID: 'Iv1.1dd1410ac14946b5', //config.gitHub.ClientId,
-    clientSecret: '795760751219fa0e7038b9f9bbaa1e1f5d768235', //config.gitHub.Secret,
-    callbackURL: 'https://backend-commerce-dev.onrender.com/api/sessions/githubcallback' //config.gitHub.callbackURL
+    clientID: config.gitHub.ClientId,
+    clientSecret: config.gitHub.Secret,
+    callbackURL: config.gitHub.callbackURL
   }, async (accessToken, refreshToken, profile, done) => {
     try {
- 
       logger.logger.debug('entrostrategygithub');
       logger.logger.info('el perfil', profile);
       //Tomo los datos que me sirven
@@ -148,7 +126,6 @@ const initlizePassportStrategies = () => {
           age: 23,
           password: '',
         }
-
         //Creo el nuevo usuario
         const result = await usersServices.createUsers(newUser);
         done(null, result)
@@ -190,4 +167,5 @@ const initlizePassportStrategies = () => {
   )
   );
 };
+
 export default initlizePassportStrategies;

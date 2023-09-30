@@ -1,22 +1,24 @@
 <h1>Cargue los documentos</h1>
+
 <form id="uploadForm" action="/api/users/premium/{{uid}}/documents" method="POST" enctype="multipart/form-data">
     <label class="profile">Foto de perfil:</label>
     <input name="profile" type="file" class="form-control" id="profile">
     <br>
     <label class="profile">Id:</label>
     <input name="iDriver" type="file" class="form-control" id="IDriver">
-       <br>
+    <br>
     <label class="profile">Comprobante de Domicilio:</label>
     <input name="addressProof" type="file" class="form-control" id="addressProof">
-       <br>
+    <br>
     <label class="profile">Comprobante de estado de Cuenta:</label>
     <input name="bankProof" type="file" class="form-control" id="bankProof">
     <br>
     <button id="uploadFiles" type="submit" class="btn uploadButtonStyle m-3" data-id="{{uid}}">Submit</button>
-
 </form>
-        <button>
+
+<button>
     <a href="/profile" class="btn btn-secondary m-3 add-product-btn">Volver al profile</a>
 </button>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/uploadDocuments.js" type="module"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"> </script>
+<script src="/js/uploadDocuments.js" type="module"> </script>

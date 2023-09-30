@@ -1,11 +1,11 @@
 import { cookieExtractor } from '../utils.js';
 
+
 export const privacy = (privacyType) => {
+
   return (req, res, next) => {
-// Extraigo el user de la cookie
-const user = cookieExtractor(req);
-
-
+    // Extraigo el user de la cookie
+    const user = cookieExtractor(req);
 
     switch (privacyType) {
       //En caso de ser Privado
@@ -14,7 +14,7 @@ const user = cookieExtractor(req);
         if (user) {
           next();
         } else {
-        //Si no esta logeado lo redirijo a login
+          //Si no esta logeado lo redirijo a login
           res.redirect('/login');
         }
         break;
@@ -29,6 +29,5 @@ const user = cookieExtractor(req);
         }
         break;
     }
-   
   };
 };

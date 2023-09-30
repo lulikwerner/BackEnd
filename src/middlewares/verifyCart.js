@@ -1,8 +1,9 @@
-import { cookieExtractor } from '../utils.js';
+import jwt from 'jsonwebtoken';
+
 import config from '../config.js';
+import { cookieExtractor } from '../utils.js';
 import LoggerService from '../services/LoggerService.js';
 
-import jwt from 'jsonwebtoken';
 
 const logger = new LoggerService(config.logger.type); 
 
@@ -19,7 +20,6 @@ const verifyCart = (req, res, next) => {
  
    if(trimmedCartValueFromToken  !== req.params.cid) return  res.status(403).send({ status: 'error', error: 'Forbidden' });
    next();
-
 };
 
 export default verifyCart;

@@ -1,11 +1,10 @@
 <h1>Producto</h1>
-
 <div>
     <button id="logOutButton" type="submit" class="btn logOutButtonStyle m-3">Logout</button>
     <button>
         <a href="/profile" class="btn btn-secondary m-3 profile-btn">Perfil</a>
     </button>
-    
+
     {{#unless (equalsIgnoreCase user.role 'ADMIN')}}
     <button>
         <a href="/products" class="btn btn-secondary m-3 keep-shopping-btn">Seguir Comprando</a>
@@ -16,7 +15,7 @@
     <button>
         <a href="/search" class="btn btn-secondary m-3 keep-shopping-btn">Editar Usuario</a>
     </button>
-       <button>
+    <button>
         <a href="/api/users/delete" class="btn btn-secondary m-3 keep-shopping-btn">Eliminar usuarios</a>
     </button>
     {{/if}}
@@ -24,107 +23,69 @@
 
 <br>
 
-<form id="formProducts"  method="POST" enctype="multipart/form-data">
-<div class="col-md-4">
-        <label for="" class="form-label">
-            Title:
-        </label>
+<form id="formProducts" method="POST" enctype="multipart/form-data">
+    <div class="col-md-4">
+        <label for="" class="form-label">Title:</label>
         <input name="title" type="text" class="form-control" id="title" required>
     </div>
     <div class="col-md-4">
-        <label for="" class="form-label">
-            Description:
-        </label>
+        <label for="" class="form-label">Description:</label>
         <input name="description" type="text" class="form-control" id="description" required>
     </div>
     <div class="col-md-4">
-        <label for="" class="form-label">
-            Price:
-        </label>
-       <input name="price" type="number" class="form-control" id="price" required>
+        <label for="" class="form-label">Price:</label>
+        <input name="price" type="number" class="form-control" id="price" required>
     </div>
-<div class="col-md-4">
-        <label for="" class="form-label">
-            Code:
-        </label>
+    <div class="col-md-4">
+        <label for="" class="form-label">Code:</label>
         <input name="code" type="text" class="form-control" id="code" required>
     </div>
     <div class="col-md-4">
-        <label for="" class="form-label">
-            Stock:
-        </label>
+        <label for="" class="form-label">Stock:</label>
         <input name="stock" type="number" class="form-control" id="stock" required>
     </div>
-<div class="form-check mx-4">
-    <input name="status" class="form-check-input" type="radio" value="Active" id="activeStatus" checked="">
-    <label class="form-check-label" for="activeStatus">
-        Active
-    </label>
-<input name="status" class="form-check-input" type="radio" value="Inactive" id="inactiveStatus">
-    <label class="form-check-label" for="inactiveStatus">
-        Inactive
-    </label>
-</div>
+    <div class="form-check mx-4">
+        <input name="status" class="form-check-input" type="radio" value="Active" id="activeStatus" checked="">
+        <label class="form-check-label" for="activeStatus">Active</label>
+        <input name="status" class="form-check-input" type="radio" value="Inactive" id="inactiveStatus">
+        <label class="form-check-label" for="inactiveStatus">Inactive</label>
+    </div>
     <div class="col-md-4">
-        <label for="" class="form-label">
-            Category:
-        </label>
+        <label for="" class="form-label">Category:</label>
         <input name="category" type="text" class="form-control" id="category" required>
     </div>
-
-
     <label class="profile">Foto de perfil:</label>
     <input name="thumbnail" type="file" class="form-control" id="thumbnail">
     <br>
     <button id="creatProductsFiles" type="submit" class="btn uploadButtonStyle m-3">Submit</button>
-    </form>
+</form>
 
 
 <h2>PRODUCTOS</h2>
-    {{#each producth }}
-   
-        <ul>
-            <li>
-                id: {{this.this._id}}
-            </li>
-               <li>
-            {{#if this.thumbnail}}
-             <img src="/img/products/{{this.thumbnail.[0].filename}}" alt="{{ this.thumbnail.[0].originalname }}" width="300">
-            {{else}}
-                No Image
-            {{/if}} 
-        </li>
-            <li>
-                title: {{this.title}}
-            </li>
-            <li>
-                description: {{this.description}}
-            </li>
-            <li>
-                price: ${{this.price}}
-            </li>
-            <li>
-                category: {{this.category}}
-            </li>
-            <li>
-                status: {{this.status}}
-            </li>
-            <li>
-                code: {{this.code}}
-            </li>
-            <li>
-                stock: {{this.stock}}
-            </li>
-         
-      
+{{#each producth }}
+<ul>
+    <li>
+        id: {{this.this._id}}
+    </li>
+    <li>
+        {{#if this.thumbnail}}
+        <img src="/img/products/{{this.thumbnail.[0].filename}}" alt="{{ this.thumbnail.[0].originalname }}"
+            width="300">
+        {{else}}
+        No Image
+        {{/if}}
+    </li>
+    <li> title: {{this.title}}</li>
+    <li>description: {{this.description}}</li>
+    <li>price: ${{this.price}}</li>
+    <li>category: {{this.category}}</li>
+    <li>status: {{this.status}}</li>
+    <li>code: {{this.code}}</li>
+    <li>stock: {{this.stock}}</li>
+    <button type="button" class="btn btn-danger" id="{{this.this._id}}">Delete</button>
+</ul>
+{{/each}}
 
-
- <button type="button" class="btn btn-danger" id="{{this.this._id}}">Delete</button>
-
-
-        </ul>
-
-   {{/each}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/realTimeProducts.js" type="module"></script>
-<script src="/js/logout.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"> </script>
+<script src="/js/realTimeProducts.js" type="module"> </script>
+<script src="/js/logout.js" type="module"> </script>

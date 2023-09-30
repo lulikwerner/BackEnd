@@ -1,12 +1,12 @@
-import cartModel from "../models/carts.js";
-import productModel from "../models/products.js";
-import mongoose from "mongoose";
-import LoggerService from '../../../services/LoggerService.js';
+import mongoose from 'mongoose';
+
 import config from '../../../config.js';
+import cartModel from '../models/carts.js';
+import productModel from '../models/products.js';
+import LoggerService from '../../../services/LoggerService.js';
 
 
-const logger = new LoggerService(config.logger.type); 
-
+const logger = new LoggerService(config.logger.type);
 export default class CartManager {
   //Obtiene todos los carts
   getCartBy = async (params) => {
@@ -15,10 +15,9 @@ export default class CartManager {
       .populate('products.product')
       .lean();
 
-
-    // Calculate the quantity for each product in the cart
+    // Calcula la cantidad que hay de cada producto en el carrito
     const cartWithQuantity = populatedCart.products.map((productEntry) => {
-      const quantity = productEntry.quantity || 1; // Use a default quantity of 1 if the quantity field is not present
+      const quantity = productEntry.quantity || 1;
       const product = productEntry.product;
       return {
         product,
@@ -37,15 +36,15 @@ export default class CartManager {
     //logger.logger.info(JSON.stringify(populatedCart, null, '\t'));
     return populatedCart
   };
-  //Crea un cart
+
+  //Crea un carrito
   createCart = async (products) => {
     try {
-    console.log(products)
+      console.log(products)
       const cart = new cartModel();
       const productIds = products.map(product => product._id);
-      console.log('id',productIds)
       const productsToAdd = await productModel.find({ _id: { $in: productIds } });
-      console.log('elproductoagregar',productsToAdd)
+
       for (const product of productsToAdd) {
         const matchingProduct = products.find(p => p._id.toString() === product._id.toString());
         if (matchingProduct) {
@@ -61,7 +60,6 @@ export default class CartManager {
 
   //Actualiza los productos del cart con el POST y los agrega al CART
   updateQtyCart = async (cid, pid, quantity) => {
-
     try {
       //Busco el carrito
       const cart = await cartModel.findById(cid);
@@ -70,41 +68,23 @@ export default class CartManager {
       if (!cart) {
         throw new Error(`The ID cart: ${cid} not found`);
       }
-      //const [product] = [products];
-      //const { _id: productId } = product; {
-
-        //Busco el producto
-        const product = await productModel.findById(pid);
-        //Si el producto existe:
-        if (product) {
-          /*const NewQty = product.quantity += quantity
-          logger.logger.info(product.quantity);
-          logger.logger.info(quantity);
-          logger.logger.info('lacantidad',NewQty );
-
-          //Si la cantidad que estoy agregando es mayor al stock del producto. Arrojo error
-          if (NewQty > product.stock) {
-            throw {
-              message: 'There is not enough stock',
-              statusCode: 400, 
-            };
-          }  */
-          const existingProduct = cart.products.find(p => p.product.equals(product._id));
-          logger.logger.info('elexistingproduct', existingProduct);
-          //Si existe en el cart y la cantidad total no excede al stock
-          //while(existingProduct.quantity>0){
-          if (existingProduct) {
-            existingProduct.quantity += quantity;
-          }
-        //}
-          //Si no existe en el cart lo agrego
-          if (!existingProduct) {
-            const newProduct = { product: product._id, quantity: 1 };
-            cart.products.push(newProduct);
-            logger.logger.info('Added product:', newProduct);
-          }
+      //Busco el producto
+      const product = await productModel.findById(pid);
+      //Si el producto existe:
+      if (product) {
+        const existingProduct = cart.products.find(p => p.product.equals(product._id));
+        logger.logger.info('elexistingproduct', existingProduct);
+        //Si existe en el cart y la cantidad total no excede al stock
+        if (existingProduct) {
+          existingProduct.quantity += quantity;
         }
-     // }
+        //Si no existe en el cart lo agrego
+        if (!existingProduct) {
+          const newProduct = { product: product._id, quantity: 1 };
+          cart.products.push(newProduct);
+          logger.logger.info('Added product:', newProduct);
+        }
+      }
       await cart.save();
       return cart;
     } catch (error) {
@@ -117,7 +97,7 @@ export default class CartManager {
   updateProductsInCart = async (cid, products) => {
     try {
       const cart = await cartModel.findById(cid).populate('products.product');
-      // Cart not found
+      // Si no encuentra el carrito
       if (!cart) {
         return null;
       }
@@ -128,10 +108,11 @@ export default class CartManager {
         //Busco el product en el cart
         const cartProduct = cart.products.find((cartProduct) => cartProduct.product._id.toString() === productId);
         logger.logger.debug('estaono', cartProduct);
+
         if (cartProduct) {
           //Si tiene cantidad le hago un update de la misma sino mantengo la que ya tengo
           if (product.quantity !== undefined) {
-            cartProduct.quantity = product.quantity; 
+            cartProduct.quantity = product.quantity;
             logger.logger.info(`Updated quantity:`, product.quantity);
           }
           //Para el resto de los Fields
@@ -144,22 +125,21 @@ export default class CartManager {
           });
         }
       });
-  
       await cart.save();
       return cart;
+
     } catch (error) {
       console.log(error);
     }
   };
-
 
   //Actualiza la cantidad en un cart
   updateCart = async (cid, pid, qty) => {
     try {
       const cart = await cartModel.findById(cid).populate('products.product');
       logger.logger.info('cartt', cart);
-
       const productIndex = cart.products.findIndex((p) => p.product._id.equals(pid));
+
       if (productIndex !== -1) {
         //Si la nueva cantidad  es mayor al stock del producto. Arrojo error
         if (qty > cart.products[productIndex].product.stock) {
@@ -174,6 +154,7 @@ export default class CartManager {
       } else {
         throw new Error('Product not found in cart');
       }
+
     } catch (error) {
       throw error;
     }
@@ -189,7 +170,7 @@ export default class CartManager {
     try {
       const cart = await cartModel.findById(cid);
       if (!cart) {
-        throw new Error("Cart not found");
+        throw new Error('Cart not found');
       }
       logger.logger.info('id', productIdToDelete);
       const productIdsInCart = cart.products.map(item => item.product.toString());
@@ -202,6 +183,7 @@ export default class CartManager {
       }
       const updatedCart = await cart.save();
       return updatedCart;
+
     } catch (err) {
       return err;
     }
@@ -213,7 +195,6 @@ export default class CartManager {
       if (!mongoose.Types.ObjectId.isValid(cid)) {
         throw new Error('Invalid cart ID');
       }
-
       const updatedCart = await cartModel.findByIdAndUpdate(
         cid,
         { $set: { products: [] } },
@@ -225,6 +206,7 @@ export default class CartManager {
       return error;
     }
   }
+
   updateOneProductInCart = async (cid, cart) => {
     const updatedCart = await cartModel.findByIdAndUpdate(
       cid,
@@ -234,16 +216,7 @@ export default class CartManager {
       { new: true }
     ).populate('products.product').lean();
     logger.logger.info(JSON.stringify(updatedCart, null, '\t'));
-
     return updatedCart;
   };
-
-
-
-
-
-
-
-
 
 };

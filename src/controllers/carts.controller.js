@@ -1,21 +1,23 @@
-import { cartService, productService, checkoutService } from '../services/repositories.js'
-import ticketModel from '../dao/mongo/models/tickets.js';
-import checkoutTicketModel from '../dao/mongo/models/checkout.js';
-import { cartsInvalidValue } from '../constants/cartErrors.js';
-import ErrorService from '../services/Error/ErrorService.js';
-import { productsInvalidValue } from '../constants/productErrors.js';
-import config from '../config.js';
-import LoggerService from '../services/LoggerService.js';
-
 import EErrors from '../constants/EErrors.js'
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
+
+import config from '../config.js';
+import { cartService, productService } from '../services/repositories.js'
+import ticketModel from '../dao/mongo/models/tickets.js';
+import checkoutTicketModel from '../dao/mongo/models/checkout.js';
+import { productsInvalidValue } from '../constants/productErrors.js';
+import { cartsInvalidValue } from '../constants/cartErrors.js';
+import ErrorService from '../services/Error/ErrorService.js';
+import LoggerService from '../services/LoggerService.js';
+
 
 const logger = new LoggerService(config.logger.type);
 
 const addProductToCart = async (req, res) => {
   const products = req.body;
   const cart = req.body;
+
   try {
     if (!Array.isArray(cart)) {
       return res.sendBadRequest('Cart should be an array');
@@ -25,6 +27,7 @@ const addProductToCart = async (req, res) => {
       if (!products._id || !products.quantity) {
         return res.sendBadRequest('One or more fields are incomplete for a product');
       }
+
       //Chequeo si las cantidades sean un numero o mayor a 0
       if (isNaN(products.quantity) || products.quantity < 0) {
         return res.sendBadRequest('Enter a valid value for the  products');
@@ -32,12 +35,13 @@ const addProductToCart = async (req, res) => {
     }
     console.log('losproductos a agregar', products)
     const createdCart = await cartService.createCartService(products);
+
     if (!createdCart) {
       return res.sendBadRequest('Failed to create the cart');
     }
-
     return res.sendSuccess('Cart created and products added successfully');
-  }catch (error) {
+
+  } catch (error) {
     if (error.message.includes('does not exist')) {
       return res.sendBadRequest('One or more products do not exist');
     }
@@ -64,16 +68,15 @@ const getCartById = async (req, res, done) => {
     const cart = await cartService.getCartByIdService(cid);
     logger.logger.debug(cart);
 
-
     // Si no encuentra el cart
     if (!cart) {
       return res.sendBadRequest('Cart not found');
     }
     // Si el cart se encuentra renderizo la info
     res.render('cart', { carth: cart });
+
   } catch (error) {
     done(error);
-    //res.sendInternalError('Internal server error');
   }
 };
 
@@ -83,21 +86,23 @@ const postProductInCart = async (req, res, done) => {
   logger.logger.info(pid);
   logger.logger.info('cid', cid)
   logger.logger.info('qty', quantity);
-
   const { title, description, code, price, stock, category, thumbnails } = req.body;
-  try {
 
+  try {
     //Evaluo que la cantidad sea mayor a 1
     if (quantity < 1) return res.sendBadRequest('The quantity must be greater than 1');
     //Busco el Producto
     const checkIdProduct = await productService.getProductByService({ _id: pid });
+
     //Si no se encuentra el producto
     if (!checkIdProduct) { return res.sendBadRequest('Product not found') };
     //Busco el carrito
     const checkIdCart = await cartService.getCartByIdService({ _id: cid });
+
     //Si no se encuentra el carrito
     if (!checkIdCart) { return res.sendBadRequest('Cart not found') };
     //Tiene que enviar algun dato aunque sea para modificar
+
     if (!title && !description && !code && !price && !stock && !category && !quantity) {
       {
         ErrorService.createError({
@@ -108,10 +113,11 @@ const postProductInCart = async (req, res, done) => {
           status: 400
         })
       }
-      // return res.sendBadRequest('Please send a new value to update');
     }
+
     //Evaluo que la cantidad enviada sea un numero
     if (isNaN(Number(quantity))) return res.sendBadRequest('The quantity has to be a number');
+
     // Si paso el parametro qty para modificar
     if (isNaN(quantity) || quantity < 0) {
       return res.sendBadRequest('Quantity should be a valid value');
@@ -144,23 +150,28 @@ const deleteProductInCart = async (req, res, done) => {
     }
     // Busco el Id del carrito en carts
     const cart = await cartService.getCartByIdService({ _id: cid });
+
     // Si no se encuentra el carrito en carts
     if (!cart) {
       return res.sendBadRequest('Cart not found');
     }
+
     if (cart.products.length === 0) {
       return res.sendBadRequest('The cart is empty');
     }
+
     // Si no se envia ningun pid
     if (!pid) {
       return res.sendBadRequest('Please enter a valid product ID');
     }
+
     // Busco el pid en el carrito
     const productIndex = cart.products.findIndex((product) => {
-      const productId = product.product._id.toString(); 
+      const productId = product.product._id.toString();
       logger.logger.info('productindex', productId);
       return productId === pid;
     });
+
     // Si no encuentro el producto en el array
     if (productIndex === -1) {
       return res.sendBadRequest('Product not found in the cart');
@@ -170,9 +181,9 @@ const deleteProductInCart = async (req, res, done) => {
     // Hago el update en el carrito
     logger.logger.debug(pid);
     const cartWithoutProducts = await cartService.deleteProductInCartService(cid, pid);
-    //await cartiWithoutProducts.save();
     // Envia un success response con el update del carrito
-    return res.status(200).send({ status: 'success', message: `Product with ID ${pid} removed from the cart`, cart }); //cambiar
+    return res.status(200).send({ status: 'success', message: `Product with ID ${pid} removed from the cart`, cart }); 
+
   } catch (error) {
     done(error)
   }
@@ -180,11 +191,10 @@ const deleteProductInCart = async (req, res, done) => {
 
 const deleteCart = async (req, res, done) => {
   const { cid } = req.params;
+
   try {
     // Si no se envia ningun id de carrito
     if (!cid || !mongoose.Types.ObjectId.isValid(cid)) {
-
-
       ErrorService.createError({
         name: 'Cart input error',
         cause: cartsInvalidValue(req.params),
@@ -196,10 +206,12 @@ const deleteCart = async (req, res, done) => {
       // Busco el Id del carrito en carts
       const cart = await cartService.getCartByIdService({ _id: cid });
       logger.logger.debug(cart);
+
       // Si no se encuentra el carrito en carts
       if (!cart) {
         return res.sendBadRequest('Cart not found');
       }
+
       if (cart.products.length === 0) {
         return res.sendBadRequest('The cart is already empty')
       }
@@ -214,19 +226,17 @@ const deleteCart = async (req, res, done) => {
 };
 
 const updateCart = async (req, res) => {
+
   try {
     const { cid } = req.params;
     const products = req.body;
     if (!Array.isArray(products)) {
       return res.status(400).json({ message: 'Products must be an array' });//cambiar el response
     }
-
     // Busco el cart
     const cart = await cartService.getCartByIdService(cid);
-
     let productFound = false;
     let updatedProducts = [];
-
     // Para cada producto que envio en el body para modificar
     products.forEach(async (product) => {
       const productId = product.pid;
@@ -237,7 +247,8 @@ const updateCart = async (req, res) => {
           cartProduct.product._id &&
           cartProduct.product._id.toString() === productId
       );
-        //Si el producto no se encuentra
+
+      //Si el producto no se encuentra
       if (!cartProduct) {
         logger.logger.error('Product not found in cart');
       } else {
@@ -247,13 +258,15 @@ const updateCart = async (req, res) => {
         updatedProducts.push(product);
       }
     });
-//Si no se envia ningun producto a actualizar
+
+    //Si no se envia ningun producto a actualizar
     if (!productFound) {
       return res.sendBadRequest('There are no products matching those id/s ');
     }
     // Updateo el cart con los nuevos valores
     const updatedCart = await cartService.updateProductsInCartService(cid, updatedProducts);
     res.sendSuccessWithPayload({ message: 'Cart updated successfully', cart: updatedCart });
+
   } catch (err) {
     res.sendInternalError('Internal server error', err);
   }
@@ -262,33 +275,38 @@ const updateCart = async (req, res) => {
 const updateQtyProductInCart = async (req, res, done) => {
   const { cid, pid } = req.params;
   const { quantity } = req.body;
-  //logger.logger.info('quantity',quantity);
-  //logger.logger.info('pid',pid);
-  try {
 
+  try {
     if (!cid || !mongoose.Types.ObjectId.isValid(cid)) {
       return res.sendBadRequest('Please enter a valid cart ID');
     }
     const cart = await cartService.getCartByIdService({ _id: cid });
+
     if (!cart) {
       return res.sendNotFound({ status: 'error', message: 'Cart not found' });
     }
+
     if (cart.products.length === 0) {
       return res.sendBadRequest('The cart is empty');
     }
+
     if (!pid) {
       return res.sendBadRequest('Please enter a valid product ID');
     }
+
     if (quantity === undefined || quantity === '') {
       return res.sendBadRequest('Please send a new value to update');
     }
+
     if (isNaN(quantity)) {
       return res.sendBadRequest('Quantity should be a valid value');
     }
     const productToUpdate = cart.products.find(product => product.product._id.toString() === pid);
+
     if (!productToUpdate) {
       return res.status(404).send({ status: 'error', message: 'Product not found in the cart' });
     }
+
     //Si la cantidad que envio desde el front es negativa y la cantidad del producto es>0 o la la cantidad que envio desde el front es positiva entonces actualizo las cantidades
     if (Number(quantity) < 0 && productToUpdate.quantity > 0 || Number(quantity) > 0) {
       productToUpdate.quantity = Number(quantity);
@@ -298,6 +316,7 @@ const updateQtyProductInCart = async (req, res, done) => {
       logger.logger.info(JSON.stringify(cartUpd, null, '\t'));
       return res.sendSuccess('Product updated successfully');
     }
+
   } catch (error) {
     logger.logger.error(error);
     return res.sendBadRequest('Product could not be updated');
@@ -306,23 +325,21 @@ const updateQtyProductInCart = async (req, res, done) => {
 
 const checkoutCart = async (req, res) => {
   const { cid } = req.params;
+
   try {
     // Primero busco si existe el cart
     const cartExist = await cartService.getCartByIdService(cid);
-    //logger.logger.info(JSON.stringify(cartExist, null, '\t'));
 
     //Si el cart existe 
     if (cartExist) {
       const InCart = [];
       const Outstock = [];
       logger.logger.info(JSON.stringify(cartExist, null, '\t'));
-      //logger.logger.info('losticketsincart', cartExist.tickets);
       logger.logger.info('losincart', cartExist.products);
       // Checkeo si hay stock suficiente para comprar y lo guardo en un nuevo array
       Object.values(cartExist.products).forEach((product) => {
         if (product.quantity <= product.product.stock) {
           const subtotal = product.product.price * product.quantity;
-          //logger.logger.info('sub',subtotal);
           const newStockValue = product.product.stock - product.quantity;
           // Hago update del stock en mi DB
           const updatedProduct = productService.updateProductService(product.product._id, {
@@ -349,20 +366,19 @@ const checkoutCart = async (req, res) => {
           logger.logger.info('Empujar al arreglo Outstock', Outstock);
         }
       });
+
       //A los productos InCart los voy filtrando llamando a la funcion deleteProductInCartService y los voy sacando del cart
       for (const product of InCart) {
         logger.logger.debug(cid)
-
         logger.logger.debug(product._id.toString())
         const ver = await cartService.deleteProductInCartService(cid, product._id.toString());
-
       }
+      
       // Ahora Obtengo el total del cart
       let totalProduct = 0;
       InCart.forEach((subtotal) => {
         totalProduct += subtotal.subtotal;
       });
-      // logger.logger.info('Total:', totalProduct);
       let ticket = null;
       //Si en el arreglo Incart hay productos genero el ticket de compra con esos mismos
       if (InCart.length != 0) {
@@ -403,16 +419,12 @@ const checkoutDisplay = async (req, res) => {
       .populate('ticket')
       .lean()
       .exec();
-    // logger.logger.info(JSON.stringify(ticketData, null, '\t'));
     return res.render('purchase', { checkoutTicket: ticketData });
   } catch (error) {
     logger.logger.error('Error:', error);
     return res.sendBadRequest('Purchase could not be completed');
   }
 };
-
-
-
 
 
 export default {

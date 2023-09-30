@@ -1,64 +1,40 @@
 <h1>Usuarios Inactivos</h1>
 <h2> Estos son los usuarios que no se conectan hace mas de dos dias</h2>
-{{#if userh.length}}
-  <div class="user" id="user">
-    {{#each userh}}
-      <div id="user">
-        <ul>
-          <li id="uid">
-            id:
-            {{_id}}
-          </li>
-          <li>
-            Nombre:
-            {{first_name}}
-          </li>
-          <li>
-            Apellido:
-            {{last_name}}
-          </li>
-          <li id="uemail">
-            Email:
-            {{email}}
-          </li>
-          <li>
-            Role:
-            {{role}}
-          </li>
-          <li>
-            Cart:
-            {{cart}}
-          </li>
-          {{last_connection}}
-          <li>
-            thumbnail:
-            {{#if thumbnail}}
-              <img src="data:image/png;base64, {{thumbnail}}" alt="Thumbnail" />
-            {{else}}
-              No Image
-            {{/if}}
-          </li>
-        </ul>
-      </div>
-    {{/each}}
-  </div>
-  <h3> Desea eliminar el/los usuario/s?</h3>
-  <button
-    id="deleteUserButton"
-    type="submit"
-    class="btn deleteUserButtonStyle m-3"
-  >Eliminar usuarios</button>
 
+{{#if userh.length}}
+<div class="user" id="user">
+  {{#each userh}}
+  <div id="user">
+    <ul>
+      <li id="uid"> id:{{_id}} </li>
+      <li> Nombre:{{first_name}} </li>
+      <li> Apellido:{{last_name}} </li>
+      <li id="uemail"> Email:{{email}} </li>
+      <li> Role:{{role}} </li>
+      <li> Cart:{{cart}}</li>
+
+      <li>
+        {{#if thumbnail}}
+        <img src="data:image/png;base64, {{thumbnail}}" alt="Thumbnail" />
+        {{else}}
+        No Image
+        {{/if}}
+      </li>
+    </ul>
+  </div>
+  {{/each}}
+</div>
+<h3> Desea eliminar el/los usuario/s?</h3>
+<button id="deleteUserButton" type="submit" class="btn deleteUserButtonStyle m-3">Eliminar usuarios</button>
 {{else}}
-  <p>No hay usuarios inactivos.</p>
+<p>No hay usuarios inactivos.</p>
 {{/if}}
-<br />
+
+<br/>
+
 <button>
-  <a
-    href="/realTimeProducts"
-    class="btn btn-secondary m-3 keep-shopping-btn"
-  >Volver al Inicio</a>
+  <a href="/realTimeProducts" class="btn btn-secondary m-3 keep-shopping-btn">Volver al Inicio</a>
 </button>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/deleteUsers.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"> </script>
+<script src="/js/deleteUsers.js" type="module"> </script>

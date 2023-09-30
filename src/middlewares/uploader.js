@@ -1,11 +1,13 @@
 import multer from 'multer';
+
 import { __dirname } from '../utils.js';
 
+
 const storage = multer.diskStorage({
+
   destination: function (req, file, callback) {
     let folder;
     const fileName = file.fieldname;
-
     switch (fileName) {
       case 'thumbnail':
         folder = 'img/products';
@@ -19,10 +21,9 @@ const storage = multer.diskStorage({
         folder = 'documents';
         break;
       default:
-        folder = 'img'; 
+        folder = 'img';
         break;
     }
-
     callback(null, `${__dirname}/Public/${folder}`);
   },
   filename: function (req, file, callback) {

@@ -1,79 +1,52 @@
-
 {{#if user}}
+<div>
+    <h1>Hola {{user.first_name}}</h1>
+    <p>Tu rol es de {{user.role}}</p>
+</div>
+<button id="logOutButton" type="submit" class="btn logOutButtonStyle m-3"> Logout </button>
+<button id="CartButton" type="submit" class="btn logOutButtonStyle m-3"> Go to Cart </button>
+<button> <a href="/profile" class="btn btn-secondary m-3 profile-btn"> Perfil </a> </button>
+{{/if}}
 
-    <div>
-        <h1>Hola {{user.first_name}}</h1>
-        <p>Tu rol es de {{user.role}}</p>
-    </div>
-    <button id="logOutButton" type="submit" class="btn logOutButtonStyle m-3" >Logout</button>
-
-    <button id="CartButton" type="submit" class="btn logOutButtonStyle m-3" >Go to Cart</button>
-    <button>
-     <a href="/profile" class="btn btn-secondary m-3 profile-btn">Perfil</a>
-     </button>
-    {{/if}}
-
-    {{#if (equalsIgnoreCase user.role 'PREMIUM')}}
-    <button>
-        <a href="/realTimeProducts" class="btn btn-secondary m-3 change-role-btn">Agregar Productos</a>
-    </button>
+{{#if (equalsIgnoreCase user.role 'PREMIUM')}}
+<button> <a href="/realTimeProducts" class="btn btn-secondary m-3 change-role-btn"> Agregar Productos </a> </button>
 {{/if}}
 
 <h2>PRODUCTOS</h2>
-    {{#each producth }}
-   
-        <ul>
-            <li>
-                id: {{this.this._id}}
-            </li>
-            <li>
-                title: {{this.title}}
-            </li>
-            <li>
-                description: {{this.description}}
-            </li>
-            <li>
-                price: ${{this.price}}
-            </li>
-            <li>
-                category: {{this.category}}
-            </li>
-            <li>
-                status: {{this.status}}
-            </li>
-            <li>
-                code: {{this.code}}
-            </li>
-            <li>
-                stock: {{this.stock}}
-            </li>
-         <li>
-             thumbnail:
-            {{#if this.thumbnail}}
-     <img src="/img/products/{{this.thumbnail.[0].filename}}" alt="{{ this.thumbnail.[0].originalname }}" width="300">
-                <img src="data:image/png;base64, {{this.thumbnail}}" alt="Thumbnail">
-            {{else}}
-                No Image
-            {{/if}}
-        </li>
 
-        </ul>
+{{#each producth }}
+<ul>
+    <li> id: {{this.this._id}} </li>
+    <li> title: {{this.title}} </li>
+    <li> description: {{this.description}} </li>
+    <li> price: ${{this.price}} </li>
+    <li> category: {{this.category}} </li>
+    <li> status: {{this.status}} </li>
+    <li> code: {{this.code}} </li>
+    <li> stock: {{this.stock}} </li>
+    <li>
+        {{#if this.thumbnail}}
+        <img src="/img/products/{{this.thumbnail.[0].filename}}" alt="{{ this.thumbnail.[0].originalname }}"
+            width="300">
+        <img src="data:image/png;base64, {{this.thumbnail}}" alt="Thumbnail">
+        {{else}}
+        No Image
+        {{/if}}
+    </li>
+</ul>
 
-<button id="addProductButton" type="submit" class="btn addButtonStyle m-3" data-id="{{this.this._id}}">Agregar al carrito</button>
-
- 
-    {{/each}}
-    {{#if hasPrevPage}}
-    <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
-    {{/if}}
-    <p>page: {{page}}</p>
-    {{#if hasNextPage}}
-    <a href="/products?page={{nextPage}}"><button>Siguiente</button></a>
-    {{/if}}
+<button id="addProductButton" type="submit" class="btn addButtonStyle m-3" data-id="{{this.this._id}}"> Agregar al carrito </button>
+{{/each}}
+{{#if hasPrevPage}}
+<a href="/products?page={{prevPage}}"> <button> Anterior </button> </a>
+{{/if}}
+<p>page: {{page}}</p>
+{{#if hasNextPage}}
+<a href="/products?page={{nextPage}}"> <button> Siguiente </button> </a>
+{{/if}}
 </div>
 
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/detailProduct.js" type="module"></script>
-<script src="/js/logout.js" type="module"></script>
-
+<script src="/socket.io/socket.io.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"> </script>
+<script src="/js/detailProduct.js" type="module"> </script>
+<script src="/js/logout.js" type="module"> </script>

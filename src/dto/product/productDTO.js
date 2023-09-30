@@ -1,4 +1,5 @@
 export default class productDTO {
+
     constructor(product){
         this._id = product._id
         this.title = product.title ||' Sin titulo',
@@ -10,4 +11,5 @@ export default class productDTO {
         this.category = product.category || 'Sin categoria asignada',
         this.thumbnails = product.thumbnails|| 'No image'
     }
+    
 }

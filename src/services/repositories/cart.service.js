@@ -1,10 +1,13 @@
 export default class CartRepository {
-    constructor(dao){
+
+    constructor(dao) {
         this.dao = dao;
     }
+
     getCartsService = () => {
-        return  this.dao.getCartBy();
+        return this.dao.getCartBy();
     }
+
     getCartByIdService = (cid) => {
         return this.dao.getCartById(cid);
     }
@@ -18,13 +21,13 @@ export default class CartRepository {
     }
 
     updateProductsInCartService = (cid, products) => {
-        return this.dao.updateProductsInCart(cid, products); 
+        return this.dao.updateProductsInCart(cid, products);
     }
 
     updateQtyCartService = (cid, pid, qty) => {
-        return this.dao.updateQtyCart(cid, pid,qty);
-    } //ver
-    
+        return this.dao.updateQtyCart(cid, pid, qty);
+    } 
+
     deleteCartService = (cid) => {
         return this.dao.deleteCart(cid);
     }
@@ -36,7 +39,9 @@ export default class CartRepository {
     emptyCartService = (cid) => {
         return this.dao.emptyCart(cid);
     }
-    findOneandUpdateServices = (cid,cart) =>{
-    return this.dao.updateOneProductInCart(cid,cart)
-  }
+
+    findOneandUpdateServices = (cid, cart) => {
+        return this.dao.updateOneProductInCart(cid, cart)
+    }
+
 }

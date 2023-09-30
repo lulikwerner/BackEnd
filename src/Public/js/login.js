@@ -7,7 +7,7 @@ form.addEventListener('submit', async (event) => {
     const obj = {};
     data.forEach((value, key) => (obj[key] = value));
 
-console.log(obj)
+
     const response = await fetch("/api/sessions/login", {
         method: 'POST',
         body: JSON.stringify(obj),
@@ -15,7 +15,7 @@ console.log(obj)
             "Content-Type": "application/json"
         }
     });
-console.log(response)
+
     const responseText = await response.text();
     const responseData = JSON.parse(responseText);
 

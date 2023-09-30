@@ -1,4 +1,5 @@
 export default class AdminDTO {
+
     constructor(user){
             this.id = 0,
             this.first_name ='Admin',
@@ -7,5 +8,6 @@ export default class AdminDTO {
             this.role = 'ADMIN',
             this.email = 'adminCoder@coder.com'
     }
+
 }
 

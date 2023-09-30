@@ -8,28 +8,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
     if (confirmed) {
       const usersToDelete = [];
-
       const userContainer = document.getElementById("user");
       const userElements = userContainer.querySelectorAll("ul");
 
       userElements.forEach((userElement) => {
-       /* const userId = userElement
-          .querySelector("#uid")
-          .innerText.trim()
-          .split("id:")[1]
-          .trim();*/
-
-
         const userEmail = userElement
           .querySelector("#uemail")
           .innerText.trim()
           .split("Email:")[1]
           .trim();
-        console.log(userEmail);
+
         usersToDelete.push({ email: userEmail });
         userElement.remove(); 
       });
-
       deleteUsers(usersToDelete);
     }
     

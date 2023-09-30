@@ -1,4 +1,5 @@
 export default class createProductDTO {
+
     constructor(product,user){
         this.title = product.title ||' Sin titulo',
         this.price = product.price || 'Le falta el precio',
@@ -10,6 +11,6 @@ export default class createProductDTO {
         this.thumbnail = product.thumbnail|| 'No image'
         this.owner = user
     }
+    
 }
 
-//para product.sockets.js

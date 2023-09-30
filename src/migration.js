@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+
 import User from '../src/dao/mongo/models/users.js'; // Import your User model
+
 
 mongoose.connect('mongodb+srv://lulikwerner:123@clustercitofeliz.ro8b1xi.mongodb.net/ecommerce?retryWrites=true&w=majority', {
     useNewUrlParser: true,

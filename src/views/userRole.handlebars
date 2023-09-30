@@ -1,6 +1,5 @@
 
     <title>User Role</title>
-
     <h1>{{ userh.email }}</h1> 
     <h2 id="actualRole">Tu rol es de <span id="roleValue">{{userh.role}}</span></h2>
 
@@ -14,9 +13,11 @@
             <button id="modifyRole" type="submit" class="btn modifyButtonStyle m-3" data-id="{{userh._id}}">Submit</button>
         </form>
     </div>
+
         <button>
         <a href="/profile" class="btn btn-secondary m-3 add-product-btn">Volver al Perfil</a>
     </button>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js/role.js" type="module"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"> </script>
+    <script src="/js/role.js" type="module"> </script>
 

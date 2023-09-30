@@ -1,7 +1,9 @@
 export default class UserRepository  {
+
     constructor(dao){
         this.dao = dao;
     }
+    
     getUsersService = () => {
         return this.dao.getUsers();
     };

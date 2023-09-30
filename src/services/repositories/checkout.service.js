@@ -1,7 +1,9 @@
 export default class CheckoutRepository {
+
     constructor(dao){
         this.dao = dao;
     }
+
     getCheckoutServices = () => {
         return this.dao.getCheckout();
     }
@@ -9,4 +11,5 @@ export default class CheckoutRepository {
     getCheckoutByIdService = () => {
         return this.dao.getCheckoutById ();
     }
+    
 }

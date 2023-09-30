@@ -1,47 +1,45 @@
 <h1>Cart</h1>
-
 <div class="row mt-4" id="cartContent"></div>
 <h3>Cart ID: {{carth._id}}</h3>
 
 <ul>
   {{#each carth.products}}
-    <li>
-      <h4>Id: {{this.product._id}}</h4>
-      <h2>Title: {{this.product.title}}</h2>
-            {{#if this.product.thumbnail}}
-     <img src="/img/products/{{this.product.thumbnail.[0].filename}}" alt="{{ this.product.thumbnail.[0].originalname }}" width="300">
-                <img src="data:image/png;base64, {{this.product.thumbnail}}" alt="Thumbnail">
-            {{else}}
-                No Image
-            {{/if}}
-      <p>Description: {{this.product.description}}</p>
-      <h4>Code: {{this.product.code}}</h4>
-      <p>Price: {{this.product.price}}</p>
-      <p>Status: {{this.product.status}}</p>
-  
-      
- 
-
-      <p >Cantidad: <p class="quantity">{{this.quantity}}</p></p>
-    </li>
-    <button id="addButton" type="add" class="btn addButtonStyle m-3" data-pid="{{this.product._id}}" data-cid="{{carth._id}}">+</button>
-    <button id="substractButton" type="add" class="btn substractButtonStyle m-3" data-pid="{{this.product._id}}" data-cid="{{carth._id}}">-</button>
-    <button id="dButton" type="add" class="btn deleteButtonStyle m-3" data-cid-delete="{{carth._id}}" data-pid="{{this.product._id}}">Delete</button>
-
+  <li>
+    <h4>Id: {{this.product._id}}</h4>
+    <h2>Title: {{this.product.title}}</h2>
+    {{#if this.product.thumbnail}}
+    <img src="/img/products/{{this.product.thumbnail.[0].filename}}" alt="{{ this.product.thumbnail.[0].originalname }}"
+      width="300">
+    <img src="data:image/png;base64, {{this.product.thumbnail}}" alt="Thumbnail">
+    {{else}}
+    No Image
+    {{/if}}
+    <p>Description: {{this.product.description}}</p>
+    <h4>Code: {{this.product.code}}</h4>
+    <p>Price: {{this.product.price}}</p>
+    <p>Status: {{this.product.status}}</p>
+    <p>Cantidad:<p class="quantity">{{this.quantity}}</p></p>
+  </li>
+  <button id="addButton" type="add" class="btn addButtonStyle m-3" data-pid="{{this.product._id}}"
+    data-cid="{{carth._id}}">+</button>
+  <button id="substractButton" type="add" class="btn substractButtonStyle m-3" data-pid="{{this.product._id}}"
+    data-cid="{{carth._id}}">-</button>
+  <button id="dButton" type="add" class="btn deleteButtonStyle m-3" data-cid-delete="{{carth._id}}"
+    data-pid="{{this.product._id}}">Delete</button>
   {{/each}}
 </ul>
-{{#if carth.products.length}}
-<button id="checkoutButton" type="submit" class="btn checkoutButtonStyle m-3" data-cid="{{carth._id}}" >Checkout</button>
 
+{{#if carth.products.length}}
+<button id="checkoutButton" type="submit" class="btn checkoutButtonStyle m-3" data-cid="{{carth._id}}">Checkout</button>
 {{else}}
-  <h3>El carrito esta vacio</h3>
+<h3>El carrito esta vacio</h3>
 {{/if}}
+
 <button>
   <a href="/products" class="btn btn-secondary m-3 seguir-comprando-btn">Seguir Comprando</a>
 </button>
+
 <div class="row mt-4" id="cart"></div>
 
-
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/checkout.js" type="module"></script>
+<script src="/socket.io/socket.io.js"> </script>
+<script src="/js/checkout.js" type="module"> </script>

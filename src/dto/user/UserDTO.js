@@ -1,4 +1,5 @@
 export default class UserDTO {
+
     constructor(user){
         this.id = user._id, 
         this.first_name = user.first_name ||'',
@@ -8,4 +9,5 @@ export default class UserDTO {
         this.cart = user.cart || [],
         this.thumbnail = user.thumbnail || null
     }
+    
 }

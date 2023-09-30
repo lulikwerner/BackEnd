@@ -38,9 +38,6 @@ export default class ProductManager {
     createProduct = async (product) => {
       console.log('enelcreate',product)
         return await productModel.create(product);
-    
-    
- 
     };
 
     updateProduct= async (id, update) => {

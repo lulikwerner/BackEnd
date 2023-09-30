@@ -5,15 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const roleText = roleElement.textContent;
 
     // Log the extracted text
-    console.log('ELROLEACTUAL',roleText);
+ 
 
     roleForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-        console.log('Form submitted');
-        console.log(roleElement)
+
         const formData = new FormData(roleForm);
         const role = formData.get('role');
-        console.log('rol seleccionado',role)
+    
         const userId = modifyRole.getAttribute('data-id');
 
         //Le envio el nuevo role del usuario

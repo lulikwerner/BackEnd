@@ -1,13 +1,12 @@
 import bcrypt from 'bcrypt'
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
+
 import config from '../config.js';
 import LoggerService from '../services/LoggerService.js';
 
 
-
-const logger = new LoggerService(config.logger.type); 
-//import userModel from '../dao/mongo/models/tickets.js';
+const logger = new LoggerService(config.logger.type);
 
 export const createHash = async (password) => {
   const salts = await bcrypt.genSalt(10);
@@ -32,7 +31,6 @@ export const passportCall = (strategy, options = {}) => {
             return next();
           case 'locals':
             logger.logger.debug('el tema es locals');
-
             return res.sendUnauthorized(info && info.message ? info.message : 'User not found');
         }
       }
@@ -55,20 +53,3 @@ export const generateToken = (user, expiresIn = '1d') => {
 
 
 
-/*export const generateTicket = async (cid) => {
-  try {
-    const code = generateUniqueCode();
-
-    const ticket = new userModel({
-      code: code,
-      purchaser: cid,
-      amount: 0, 
-    });
-
-    await ticket.save();
-    
-  } catch (error) {
-    console.error('Ticket generation error:', error);
-    throw error;
-  }
-}*/

@@ -1,15 +1,13 @@
 import { Router } from 'express';
+
 import productManager from '../managers/productManager.js';
 import LoggerService from './src/services/LoggerService.js';
 import config from './src/config.js';
 
 
 const logger = new LoggerService(config.logger.type); 
-
 const router = Router();
 const ProductManager = new productManager();
-
-
 
 
 router.get('/', async (req, res) => {
@@ -30,7 +28,6 @@ router.get('/', async (req, res) => {
         logger.logger.error(error);
     }
 });
-
 
 router.get('/:pid', async (req, res) => {
     const { pid } = req.params
@@ -79,7 +76,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-
 router.put('/:pid', async (req, res) => {
     const { pid } = req.params;
     const productUpdate = req.body;
@@ -100,7 +96,6 @@ router.put('/:pid', async (req, res) => {
 
 });
 
-
 router.delete('/:pid', async (req, res) => {
     try {
         const { pid } = req.params
@@ -113,7 +108,5 @@ router.delete('/:pid', async (req, res) => {
         logger.logger.error(error);
     }
 });
-
-
 
 export default router;
