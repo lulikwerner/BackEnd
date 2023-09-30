@@ -419,11 +419,36 @@ const checkoutDisplay = async (req, res) => {
       .populate('ticket')
       .lean()
       .exec();
+
+      if(ticketData){
+        const result = await transport.sendMail({
+          from: 'Luli Store <config.app.email>',
+          to: userEmail,
+          subject: 'Su orden de compra es ',
+          html: `
+      <div>
+        <h1>Orden de compra</h1>
+        <h2>Su orden de compra es . Si cree que esto fue un error contacte al administrador ${ticketData}</h2>
+      </div>
+    `,
+        });
+        console.log(`Email sent to: ${userEmail}`);
+      }
+
+
     return res.render('purchase', { checkoutTicket: ticketData });
+
+
+
+
+
+
   } catch (error) {
     logger.logger.error('Error:', error);
     return res.sendBadRequest('Purchase could not be completed');
   }
+
+
 };
 
 
