@@ -1,7 +1,7 @@
 import passport from "passport";
 import local from "passport-local";
-import { Strategy } from 'passport-jwt';
-import GithubStrategy from "passport-github2";
+import { Strategy} from 'passport-jwt';
+import GithubStrategy from "passport-github2"; 
 
 import config from '../config.js';
 import { cookieExtractor } from "../utils.js";
@@ -15,7 +15,7 @@ import TokenDTO from '../dto/user/TokenDTO.js'
 import AdminDTO from '../dto/user/AdminDTO.js'
 
 
-const logger = new LoggerService(config.logger.type);
+const logger = new LoggerService(config.logger.type); 
 
 
 const LocalStrategy = local.Strategy; //Es la estrategia
@@ -57,9 +57,9 @@ const initlizePassportStrategies = () => {
           email,
           password: hashedPassword,
           documents: {},
-          thumbnail: {}
+          thumbnail:{}
         };
-
+        
         const result = await usersServices.createUsers(newUser);
         logger.logger.info('el resultado es', result);
         const products = []; //Inicializo un array vacio de products
@@ -107,9 +107,10 @@ const initlizePassportStrategies = () => {
   }));
 
   passport.use('github', new GithubStrategy({
-    clientID: config.gitHub.ClientId,
-    clientSecret: config.gitHub.Secret,
-    callbackURL: config.gitHub.callbackURL
+
+    clientID: 'Iv1.1dd1410ac14946b5',//config.gitHub.ClientId,
+    clientSecret:'795760751219fa0e7038b9f9bbaa1e1f5d768235',// config.gitHub.Secret,
+    callbackURL:'https://backend-commerce-dev.onrender.com/api/sessions/githubcallback'// config.gitHub.callbackURL
   }, async (accessToken, refreshToken, profile, done) => {
     try {
       logger.logger.debug('entrostrategygithub');
