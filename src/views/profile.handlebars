@@ -1,6 +1,6 @@
 <div>
     <h1>Hola {{user.first_name}} {{user.last_name}}</h1>
-     <img src="/img/profiles/{{user.thumbnail.filename}}" alt="{{ user.thumbnail.originalname }}" width="300">
+    <img src="/Public/img/profiles/{{user.thumbnail.filename}}" alt="{{ user.thumbnail.originalname }}" width="300">
     <p>{{user.email}}</p>
     <p id=>Tu rol es de {{user.role}}</p>
 </div>
@@ -16,8 +16,7 @@
     <a href="/premium/{{user.id}}" class="btn btn-secondary m-3 change-role-btn">Cambiar role</a>
 </button>
 <button>
-    <a href="/premium/{{user.id}}/documents"
-        class="btn btn-secondary m-3 add-product-btn">Cargar Documentos</a>
+    <a href="/premium/{{user.id}}/documents" class="btn btn-secondary m-3 add-product-btn">Cargar Documentos</a>
 </button>
 {{/if}}
 
@@ -29,20 +28,20 @@
     <a href="/realTimeProducts" class="btn btn-secondary m-3 add-product-btn">Crear producto</a>
 </button>
 <button>
-    <a href="/premium/{{user.id}}/documents"
-        class="btn btn-secondary m-3 add-product-btn">Cargar Documentos</a>
+    <a href="/premium/{{user.id}}/documents" class="btn btn-secondary m-3 add-product-btn">Cargar Documentos</a>
 </button>
 {{/if}}
 
 {{#unless (equalsIgnoreCase user.role 'ADMIN')}}
-    <button>
-        <a href="/products" class="btn btn-secondary m-3 keep-shopping-btn">Volver al Inicio</a>
-    </button>
+<button>
+    <a href="/products" class="btn btn-secondary m-3 keep-shopping-btn">Volver al Inicio</a>
+</button>
 {{/unless}}
+
 {{#if (equalsIgnoreCase user.role 'ADMIN')}}
-    <button>
-        <a href="/realTimeProducts" class="btn btn-secondary m-3 keep-shopping-btn">Volver al Inicio</a>
-    </button>
+<button>
+    <a href="/realTimeProducts" class="btn btn-secondary m-3 keep-shopping-btn">Volver al Inicio</a>
+</button>
 {{/if}}
 
 <button id="logOutButton" type="submit" class="btn logOutButtonStyle m-3">LogOut</button>
