@@ -2,15 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const roleForm = document.getElementById('roleForm');
     const modifyRole = document.getElementById('modifyRole');
     const roleElement = document.getElementById("roleValue");
-    const roleText = roleElement.textContent;
-    console.log(roleText)
+   // const roleText = roleElement.textContent;
+   // console.log(roleText)
 
     // Log the extracted text
  
 
     roleForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
+console.log('click entro')
         const formData = new FormData(roleForm);
         const role = formData.get('role');
     

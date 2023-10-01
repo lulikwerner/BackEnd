@@ -411,7 +411,6 @@ const checkoutCart = async (req, res) => {
       logger.logger.info('check', checkOutTicket);
       return res.status(200).json(checkOutTicket);
     }
-
   } catch (error) {
     logger.logger.error('Error:', error);
     return res.sendBadRequest('Purchase could not be completed');
@@ -462,7 +461,7 @@ const checkoutDisplay = async (req, res) => {
       });
       console.log(`Email sent to: ${userEmail}`);
     } else {
-      console.log('Invalid ticket data'); // Handle this case accordingly
+      console.log('Invalid ticket data'); 
     }
 
     return res.render('purchase', { checkoutTicket: ticketData });

@@ -23,12 +23,10 @@
 {{/if}}
 {{#if (equalsIgnoreCase user.role 'PREMIUM')}}
 <button>
-    <a href="/premium/{{user.id}}" class="btn btn-secondary m-3 change-role-btn">Cambiar
-        role</a>
+    <a href="/premium/{{user.id}}" class="btn btn-secondary m-3 change-role-btn">Cambiar role</a>
 </button>
 <button>
-    <a href="/realTimeProducts" class="btn btn-secondary m-3 add-product-btn">Crear
-        producto</a>
+    <a href="/realTimeProducts" class="btn btn-secondary m-3 add-product-btn">Crear producto</a>
 </button>
 <button>
     <a href="/premium/{{user.id}}/documents"
