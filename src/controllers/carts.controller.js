@@ -421,64 +421,57 @@ const checkoutCart = async (req, res) => {
 const checkoutDisplay = async (req, res) => {
   const { cid } = req.params;
 
-  //Busco el usuario
-  const userExist =  await userService.getUserByService({ cart: cid })
-  const userEmail = userExist.email
+  // Busco el usuario
+  const userExist = await userService.getUserByService({ cart: cid });
+  const userEmail = userExist.email;
 
   try {
     const ticketData = await checkoutTicketModel
       .findOne({ cid: cid })
-      .sort({ _id: -1 }) // Me va a traer el ultimo ticket que encuentra para hacer display
+      .sort({ _id: -1 })
       .populate('ticket')
       .lean()
       .exec();
 
-      if(ticketData.ticket.code){
+    if (ticketData && ticketData.ticket && ticketData.InCart) {
+      const secompraronInfo = ticketData.InCart.map(product => {
+        return `- Name: ${product.name} - Price: ${product.price} - Quantity: ${product.quantity}\n`;
+      }).join('');
 
-        const secompraronInfo = ticketData.InCart.map(product => {
-          return `- Name: ${product.name} - Price: ${product.price} - Quantity: ${product.quantity}\n`;
-        }).join('');
+      const outOfStock = ticketData.Outstock.map(product => {
+        return `- Name: ${product.name} - Quantity: ${product.quantity}\n`;
+      }).join('');
 
-        const outOfStock = ticketData.Outstock.map(product => {
-          return `- Name: ${product.name} - Quantity: ${product.quantity}\n`;
-        }).join('');
-
-        const result = await transport.sendMail({
-          from: 'Luli Store <config.app.email>',
-          to: userEmail,
-          subject: `Su orden de compra es ${ticketData.ticket.code}`,
-          html: `
+      const result = await transport.sendMail({
+        from: 'Luli Store <config.app.email>',
+        to: userEmail,
+        subject: `Su orden de compra es ${ticketData.ticket.code}`,
+        html: `
           <div>
-          <h1>Orden de compra ${ticketData.ticket.code}</h1>
-          <h2>Su orden de compra incluye los siguientes productos :</h2>
-          <ul>
-          ${secompraronInfo}
-          </ul>
-          <h2>Los siguientes productos están fuera de stock y no pudieron ser procesados:</h2>
-          <ul>
-            ${outOfStock}
-          </ul>
-        </div>
-    `,
-        });
-        console.log(`Email sent to: ${userEmail}`);
-      }
-
+            <h1>Orden de compra ${ticketData.ticket.code}</h1>
+            <h2>Su orden de compra incluye los siguientes productos :</h2>
+            <ul>
+              ${secompraronInfo}
+            </ul>
+            <h2>Los siguientes productos están fuera de stock y no pudieron ser procesados:</h2>
+            <ul>
+              ${outOfStock}
+            </ul>
+          </div>
+        `,
+      });
+      console.log(`Email sent to: ${userEmail}`);
+    } else {
+      console.log('Invalid ticket data'); // Handle this case accordingly
+    }
 
     return res.render('purchase', { checkoutTicket: ticketData });
-
-
-
-
-
-
   } catch (error) {
-    logger.logger.error('Error:', error);
+    console.error('Error:', error);
     return res.sendBadRequest('Purchase could not be completed');
   }
-
-
 };
+
 
 
 export default {
