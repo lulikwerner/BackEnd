@@ -1,9 +1,10 @@
 import EErrors from '../constants/EErrors.js'
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
+import nodemailer from 'nodemailer';
 
 import config from '../config.js';
-import { cartService, productService } from '../services/repositories.js'
+import { cartService, productService, userService } from '../services/repositories.js'
 import ticketModel from '../dao/mongo/models/tickets.js';
 import checkoutTicketModel from '../dao/mongo/models/checkout.js';
 import { productsInvalidValue } from '../constants/productErrors.js';
@@ -13,6 +14,15 @@ import LoggerService from '../services/LoggerService.js';
 
 
 const logger = new LoggerService(config.logger.type);
+
+const transport = nodemailer.createTransport({
+  service: 'gmail',
+  port: 587,
+  auth: {
+    user: config.app.email,
+    pass: config.app.password,
+  },
+});
 
 const addProductToCart = async (req, res) => {
   const products = req.body;
@@ -410,11 +420,11 @@ const checkoutCart = async (req, res) => {
 
 const checkoutDisplay = async (req, res) => {
   const { cid } = req.params;
-  logger.logger.info('');
+
   //Busco el usuario
-  const userExist = await userService.getUserByService({ cart: cid })
+  const userExist =  await userService.getUserByService({ cart: cid })
   const userEmail = userExist.email
-  console.log(userEmail)
+
   try {
     const ticketData = await checkoutTicketModel
       .findOne({ cid: cid })
@@ -423,16 +433,32 @@ const checkoutDisplay = async (req, res) => {
       .lean()
       .exec();
 
-      if(ticketData){
+      if(ticketData.ticket.code){
+
+        const secompraronInfo = ticketData.InCart.map(product => {
+          return `- Name: ${product.name} - Price: ${product.price} - Quantity: ${product.quantity}\n`;
+        }).join('');
+
+        const outOfStock = ticketData.Outstock.map(product => {
+          return `- Name: ${product.name} - Quantity: ${product.quantity}\n`;
+        }).join('');
+
         const result = await transport.sendMail({
           from: 'Luli Store <config.app.email>',
           to: userEmail,
-          subject: 'Su orden de compra es ',
+          subject: `Su orden de compra es ${ticketData.ticket.code}`,
           html: `
-      <div>
-        <h1>Orden de compra</h1>
-        <h2>Su orden de compra es . Si cree que esto fue un error contacte al administrador ${ticketData}</h2>
-      </div>
+          <div>
+          <h1>Orden de compra ${ticketData.ticket.code}</h1>
+          <h2>Su orden de compra incluye los siguientes productos :</h2>
+          <ul>
+          ${secompraronInfo}
+          </ul>
+          <h2>Los siguientes productos están fuera de stock y no pudieron ser procesados:</h2>
+          <ul>
+            ${outOfStock}
+          </ul>
+        </div>
     `,
         });
         console.log(`Email sent to: ${userEmail}`);

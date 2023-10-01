@@ -8,8 +8,8 @@ export default class UserRepository  {
         return this.dao.getUsers();
     };
     
-    getUserByService = (params) => {
-        return this.dao.getUserBy(params);
+    getUserByService = async (params) => {
+        return await this.dao.getUserBy(params);
     };
 
     createUsersService = async (user) => {
